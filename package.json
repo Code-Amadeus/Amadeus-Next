@@ -9,6 +9,7 @@
   "main": "dist/main/index.js",
   "description": "Amadeus's TypeScript/Electron runtime with native Pi, Apple Speech and Fish Audio.",
   "scripts": {
+    "prepare": "git config core.hooksPath \"$(git rev-parse --show-toplevel)/.githooks\"",
     "build": "node scripts/build.mjs",
     "build:main": "node scripts/build.mjs --main-only",
     "assets:emote": "node scripts/provision-emote.mjs",

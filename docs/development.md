@@ -230,6 +230,48 @@ Start the app with `AMADEUS_LATENCY_LOG=1` to log one line per turn when playbac
 
 Stages that do not apply (typed input, reports, text-only turns) are left out.
 
+## Commit messages
+
+Every commit header follows [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <subject>
+```
+
+`type` is one of `feat fix docs style refactor perf test build ci chore revert`.
+`scope` is optional, lowercase, and names the subsystem (`voice`, `ipc`, `scene`,
+`startup`, ...). Leave it out rather than invent one.
+
+The subject is English, lowercase imperative, no trailing period, and the whole
+header stays within 100 chars so `git log --oneline` stays readable:
+
+```
+feat(voice): speak replies through the translation director
+fix: keep the window alive when the Pi worker restarts
+docs: record the work panel and drop the legacy session channel
+```
+
+Mark a breaking change with `!` after the type, and the body must carry the
+footer `BREAKING CHANGE: <what callers must change>`. Otherwise the commit itself
+is the header alone; put the reasoning in the body when the change is not obvious.
+
+One commit does one thing. If the subject needs ";" to hold two changes, split it.
+Machine checks cannot see intent, so this part is on review.
+
+`.githooks/commit-msg` rejects anything else. `npm install` points git at it
+(`prepare` sets `core.hooksPath`), so a fresh clone is protected after its first
+install. If the hook ever goes quiet, re-arm it with:
+
+```bash
+npm run prepare
+```
+
+Merge and revert commits, and autosquash `fixup!` / `squash!` prefixes, pass
+untouched — git writes those, not us.
+
+`git commit --no-verify` still bypasses the check — that is a local escape hatch,
+not a workflow.
+
 ## Verification
 
 ```bash
